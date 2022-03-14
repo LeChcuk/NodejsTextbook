@@ -1,5 +1,5 @@
 const express = require('express');
-const { Comment } = require('../models');
+const { Comment, sequelize } = require('../models');
 
 const router = express.Router();
 
@@ -9,6 +9,7 @@ router.post('/', async (req, res, next) => {
             commenter: req.body.id,
             comment: req.body.comment,
         });
+        // const [result, metadata] = await sequelize.query()
         console.log(comment);
         res.status(201).json(comment);
     } catch (err) {

@@ -1,6 +1,7 @@
 const express = require('express');
 const User = require('../models/user');
 const Comment = require('../models/comment');
+const { sequelize } = require('../models');
 
 const router = express.Router();
 
@@ -8,7 +9,8 @@ router
     .route('/')
     .get(async (req, res, next) => {
         try {
-            const users = await User.findAll();
+            // const users = await User.findAll();
+            const users = await sequelize.query('SELECT * FROM nodejs.users');
             res.json(users);
         } catch (err) {
             console.error(err);
