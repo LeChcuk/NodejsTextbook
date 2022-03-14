@@ -1,0 +1,23 @@
+{
+  "name": "learn-sequelize",
+  "version": "1.0.0",
+  "description": "시퀼라이즈 ORM으로 MySQL 조작하자",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.3",
+    "morgan": "^1.10.0",
+    "mysql2": "^2.3.3",
+    "nunjucks": "^3.2.3",
+    "sequelize": "^6.17.0",
+    "sequelize-cli": "^6.4.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
