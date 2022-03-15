@@ -5,17 +5,31 @@ const path = require('path');
 const session = require('express-session');
 const nunjucks = require('nunjucks');
 const dotenv = require('dotenv');
+const passport = require('passport');
 
 dotenv.config();
+const { sequelize } = require('./models');
 const pageRouter = require('./routes/page');
+const authRouter = require('./routes/auth');
+const passportConfig = require('./passport');
 
 const app = express();
+passportConfig();
 app.set('port', process.env.PORT || 8001);
 app.set('view engine', 'html');
 nunjucks.configure('views', {
     express: app,
     watch: true,
 });
+
+sequelize
+    .sync({ force: false })
+    .then(() => {
+        console.log('데이터베이스 연결 성공');
+    })
+    .catch((err) => {
+        console.error(err);
+    });
 
 app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -33,8 +47,11 @@ app.use(
         },
     })
 );
+app.use(passport.initialize()); // 요청(req 객체)에 passport 설정을 심는다
+app.use(passport.session()); // req.session 객체에 passport 정보를 심는다.
 
 app.use('/', pageRouter);
+app.use('/auth', authRouter);
 
 // 404 응답 미들웨어
 app.use((req, res, next) => {
