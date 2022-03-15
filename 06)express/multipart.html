@@ -7,6 +7,13 @@
   <title>Document</title>
 </head>
 <body>
-  
+
+  <!-- enctype은  form data가 서버로 제출될 때 인코딩되는 방식을 명시한 것 -->
+  <form id="form" action="/upload" method="post" enctype="multipart/form-data">
+    <input type="file" name="image1">
+    <input type="file" name="image2">
+    <input type="text" name="title">
+    <button type="submit">업로드</button>
+  </form>
 </body>
 </html>

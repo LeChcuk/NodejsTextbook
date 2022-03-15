@@ -1,7 +1,5 @@
-async function getUser() {
-    // 로딩 시 사용자 정보를 가져오는 함수
+async function getUsers() {
     try {
-        // GET /users
         const res = await axios.get('/users');
         const users = res.data;
         const list = document.getElementById('list');
@@ -12,29 +10,25 @@ async function getUser() {
             const span = document.createElement('span');
             span.textContent = users[key];
             const edit = document.createElement('button');
-
-            // PUT /user/id(key)
             edit.textContent = '수정';
             edit.addEventListener('click', async () => {
                 const name = prompt('바꿀 이름을 입력하세요');
-                if (!name) {
-                    return alert('이름을 반드시 입력하셔야 합니다');
-                }
+                if (!name) return alert('이름을 반드시 입력해야 합니다');
+
                 try {
                     await axios.put('/user/' + key, { name });
-                    getUser();
+                    getUsers();
                 } catch (err) {
                     console.error(err);
                 }
             });
 
-            // DELETE /user/id(key)
             const remove = document.createElement('button');
             remove.textContent = '삭제';
             remove.addEventListener('click', async () => {
                 try {
                     await axios.delete('/user/' + key);
-                    getUser();
+                    getUsers();
                 } catch (err) {
                     console.error(err);
                 }
@@ -45,23 +39,21 @@ async function getUser() {
             userDiv.appendChild(remove);
             list.appendChild(userDiv);
         });
-        console.log(res.data);
+        console.log(users);
     } catch (err) {
         console.error(err);
     }
 }
 
-window.onload = getUser; // 화면 로딩 시 getUser호출
+window.onload = getUsers();
 
-// 폼 제출(submit)시 실행
 document.getElementById('form').addEventListener('submit', async (e) => {
     e.preventDefault();
     const name = e.target.username.value;
-    if (!name) return alert('이름을 입력하세요');
-
+    if (!name) return alert('이름을 입력하세요!');
     try {
         await axios.post('/user', { name });
-        getUser();
+        getUsers();
     } catch (err) {
         console.error(err);
     }
