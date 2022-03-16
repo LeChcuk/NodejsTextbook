@@ -74,14 +74,23 @@ router.get('/logout', isLoggedIn, (req, res) => {
     res.redirect('/');
 });
 
+/*
+    /kakao에서 로그인 strategy를 수행한다. 로그인 성공 여부가 callbackURL로 전달된다.
+    callback 라우터에서 로그인 strategy를 다시 수행한다.
+    
+    local 로그인과 다른 점은 .authenticate() 내부에 콜백함수를 전달하지 않았다는 것이다.
+    kakao는 로그인 성공 시 내부적으로 req.login을 호출하므로 우리가 직접 콜백함수를 만들고 req.login을 호출하지 않는 것이다.
+*/
 router.get('/kakao', passport.authenticate('kakao'));
 
 router.get(
     '/kakao/callback',
     passport.authenticate('kakao', {
+        // 로그인 실패시 redirect.
         failureRedirect: '/',
     }),
     (req, res) => {
+        // 로그인 성공시 redirect할 위치를 지정.
         res.redirect('/');
     }
 );
